@@ -13,8 +13,8 @@ This repository contains the testing suite for the Moodle web installation proce
 git clone -b main git://git.moodle.org/moodle.git moodle
 
 # Clone the web install repository.
-git clone git@github.com:lameze/moodle-webinstall.git
-cd moodle-webinstall
+git git@github.com:moodlehq/moodle-webinstaller-test.git
+cd moodle-webinstaller-test
 
 # Install the dependencies.
 composer install
