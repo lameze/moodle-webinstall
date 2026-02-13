@@ -31,27 +31,6 @@ runs:
         echo "Repository: ${{ inputs.repository }}"
         echo "Branch: ${{ inputs.branch }}"
 
-    - name: Setting up DB PostgreSQL
-      uses: m4nu56/postgresql-action@v1
-      with:
-        postgresql version: 16
-        postgresql db: test
-        postgresql user: test
-        postgresql password: test
-
-    - name: Wait for PostgreSQL to be ready
-      shell: bash
-      run: |
-        for i in {1..30}; do
-        if pg_isready -h localhost -p 5432 -U test; then
-          echo "PostgreSQL is ready"
-          break
-        else
-          echo "Waiting for PostgreSQL to be ready..."
-          sleep 2
-        fi
-        done
-
     - name: Setting up PHP
       uses: shivammathur/setup-php@v2
       with:

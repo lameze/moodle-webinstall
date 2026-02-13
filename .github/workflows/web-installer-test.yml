@@ -1,5 +1,4 @@
 name: Web Installer Testing
-
 on:
   workflow_dispatch:
     inputs:
@@ -12,18 +11,30 @@ on:
 
 jobs:
   InstallationTest:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest]
-        php: [8.3, 8.4]
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout this repository (contains the local action)
         uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}
+          # path defaults to workspace root (do not overwrite)
 
-      - uses: ./
+      - name: Checkout target repository to a subfolder
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.inputs.repository }}
+          ref: ${{ github.event.inputs.branch }}
+          path: target-repo
+
+      - name: Run web installer composite action
+        uses: ./.github/actions/web-installer-test
         with:
           repository: ${{ github.event.inputs.repository }}
           branch: ${{ github.event.inputs.branch }}
           php: ${{ matrix.php }}
+        env:
+          DB_TYPE: pgsql
+          DB_HOST: localhost
+          DB_NAME: test
+          DB_USER: test
+          DB_PASS: test
